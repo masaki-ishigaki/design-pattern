@@ -4,6 +4,8 @@ import (
 	"design-pattern-go/adapter"
 	fm "design-pattern-go/factory_method"
 	iter "design-pattern-go/iterator"
+	pr "design-pattern-go/prototype"
+	"design-pattern-go/singleton"
 	tm "design-pattern-go/template_method"
 	"fmt"
 )
@@ -47,6 +49,65 @@ func tryFactoryMethod() {
 	card3.Use()
 }
 
-func main() {
-	tryFactoryMethod()
+func trySingleton() {
+	fmt.Println("Start")
+	obj1 := singleton.GetInstance()
+	obj2 := singleton.GetInstance()
+	if obj1 == obj2 {
+		fmt.Println("obj1とobj2は同じインスタンスです。")
+	} else {
+		fmt.Println("obj1とobj2は同じインスタンスではありません。")
+	}
+	fmt.Println("End")
 }
+
+func tryPrototype() {
+	manager := pr.NewManager()
+	upen := pr.NewUnderlinePen("_")
+	mbox := pr.NewMessageBox("*")
+	sbox := pr.NewMessageBox("/")
+
+	manager.Register("strong message", upen)
+	manager.Register("warning box", mbox)
+	manager.Register("slash box", sbox)
+
+	p1 := manager.Create("strong message")
+	p1.Use("Hello, world.")
+
+	p2 := manager.Create("warning box")
+	p2.Use("Hello, world.")
+
+	p3 := manager.Create("slash box")
+	p3.Use("Hello, world.")
+}
+
+func main() {
+	tryPrototype()
+}
+
+// package main
+
+// import (
+// 	"fmt"
+// 	"log"
+// 	"net/http"
+// 	"net/http/httputil"
+// )
+
+// func handler(w http.ResponseWriter, r *http.Request) {
+// 	dump, err := httputil.DumpRequest(r, true)
+// 	if err != nil {
+// 		http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
+// 		return
+// 	}
+// 	fmt.Println(string(dump))
+// 	fmt.Fprintf(w, "<html><body>hello<body><html>\n")
+// }
+
+// func main() {
+// 	var httpServer http.Server
+// 	http.HandleFunc("/", handler)
+// 	log.Println("start http listening :1888")
+// 	httpServer.Addr = ":18888"
+// 	log.Println(httpServer.ListenAndServe())
+// }
