@@ -1,13 +1,18 @@
 package main
 
 import (
+	af "design-pattern-go/abstract_factory"
 	"design-pattern-go/adapter"
+	disp "design-pattern-go/bridge/display"
+	dispi "design-pattern-go/bridge/display_impl"
+	"design-pattern-go/builder"
 	fm "design-pattern-go/factory_method"
 	iter "design-pattern-go/iterator"
 	pr "design-pattern-go/prototype"
 	"design-pattern-go/singleton"
 	tm "design-pattern-go/template_method"
 	"fmt"
+	"os"
 )
 
 func tryIterator() {
@@ -81,33 +86,93 @@ func tryPrototype() {
 	p3.Use("Hello, world.")
 }
 
-func main() {
-	tryPrototype()
+func tryBuilder(builderType string) {
+	if builderType == "text" {
+		textBuilder := builder.NewTextBuilder()
+		director := builder.NewDirector(&textBuilder)
+		director.Construct()
+
+		castedTextBuilder := textBuilder.(*builder.TextBuilder)
+		fmt.Println(castedTextBuilder.GetTextResult())
+	} else if builderType == "html" {
+		htmlBuilder := builder.NewHTMLBuilder()
+		director := builder.NewDirector(&htmlBuilder)
+		director.Construct()
+
+		castedHTMLBuilder := htmlBuilder.(*builder.HTMLBuilder)
+		fmt.Println(castedHTMLBuilder.GetHTMLResult())
+	} else {
+		fmt.Print("Inappropriate builder type is input!!")
+	}
 }
 
-// package main
+func tryAbstractFactory(fileName, factoryName string) {
+	factory, _ := af.GetFactory(factoryName)
 
-// import (
-// 	"fmt"
-// 	"log"
-// 	"net/http"
-// 	"net/http/httputil"
-// )
+	// Blog
+	blog1 := factory.CreateLink("Blog 1", "https://example.com/blog1")
+	blog2 := factory.CreateLink("Blog 2", "https://example.com/blog2")
+	blog3 := factory.CreateLink("Blog 3", "https://example.com/blog3")
 
-// func handler(w http.ResponseWriter, r *http.Request) {
-// 	dump, err := httputil.DumpRequest(r, true)
-// 	if err != nil {
-// 		http.Error(w, fmt.Sprint(err), http.StatusInternalServerError)
-// 		return
-// 	}
-// 	fmt.Println(string(dump))
-// 	fmt.Fprintf(w, "<html><body>hello<body><html>\n")
-// }
+	blogTray := factory.CreateTray("Blog Site")
+	blogTray.Add(blog1)
+	blogTray.Add(blog2)
+	blogTray.Add(blog3)
 
-// func main() {
-// 	var httpServer http.Server
-// 	http.HandleFunc("/", handler)
-// 	log.Println("start http listening :1888")
-// 	httpServer.Addr = ":18888"
-// 	log.Println(httpServer.ListenAndServe())
-// }
+	// News
+	news1 := factory.CreateLink("News 1", "https://example.com/news1")
+	news2 := factory.CreateLink("News 2", "https://example.com/news2")
+	news3 := factory.CreateTray("News 3")
+	news3.Add(factory.CreateLink("News 3 (US)", "https://example.com/news3us"))
+	news3.Add(factory.CreateLink("News 3 (JP)", "https://example.com/news3jp"))
+
+	newsTray := factory.CreateTray("News Site")
+	newsTray.Add(news1)
+	newsTray.Add(news2)
+	newsTray.Add(news3)
+
+	// Page
+	page := factory.CreatePage("Blog and News", "Hiroshi Yuki")
+	page.Add(blogTray)
+	page.Add(newsTray)
+
+	page.Output(fileName, page)
+}
+
+func tryBridge() {
+	d1 := disp.NewDisplay(dispi.NewStringDisplayImpl("Hello, Japan."))
+	d2 := disp.NewCountDisplay(dispi.NewStringDisplayImpl("Hello, World."))
+	d3 := disp.NewCountDisplay(dispi.NewStringDisplayImpl("Hello, Universe."))
+
+	d1.Display()
+	d2.Display.Display()
+	d3.Display.Display()
+	d3.MultiDisplay(5)
+}
+
+func main() {
+	pattern := os.Args[1]
+
+	switch pattern {
+	case "iterator":
+		tryIterator()
+	case "adapter":
+		tryAdapter()
+	case "template_method":
+		tryTemplateMethod()
+	case "factory_method":
+		tryFactoryMethod()
+	case "singleton":
+		trySingleton()
+	case "prototype":
+		tryPrototype()
+	case "builder":
+		tryBuilder(os.Args[2])
+	case "abstract_factory":
+		tryAbstractFactory(os.Args[2], os.Args[3])
+	case "bridge":
+		tryBridge()
+	default:
+		fmt.Println("chose proper pattern!!")
+	}
+}
