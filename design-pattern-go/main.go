@@ -10,6 +10,7 @@ import (
 	iter "design-pattern-go/iterator"
 	pr "design-pattern-go/prototype"
 	"design-pattern-go/singleton"
+	"design-pattern-go/strategy"
 	tm "design-pattern-go/template_method"
 	"fmt"
 	"os"
@@ -150,6 +151,34 @@ func tryBridge() {
 	d3.MultiDisplay(5)
 }
 
+func tryStrategy() {
+	player1 := strategy.NewPlayer("Taro", strategy.NewWinningStrategy())
+	player2 := strategy.NewPlayer("Hana", strategy.NewProbStrategy())
+
+	for i := 0; i < 10000; i++ {
+		nextHand1 := player1.NextHand()
+		nextHand2 := player2.NextHand()
+
+		if nextHand1.IsStrongerThan(nextHand2) {
+			fmt.Println("Winner:", player1)
+			player1.Win()
+			player2.Lose()
+		} else if nextHand2.IsStrongerThan(nextHand1) {
+			fmt.Println("Winner:", player2)
+			player1.Lose()
+			player2.Win()
+		} else {
+			fmt.Println("Even...")
+			player1.Even()
+			player2.Even()
+		}
+	}
+
+	fmt.Println("Total result:")
+	fmt.Println(player1)
+	fmt.Println(player2)
+}
+
 func main() {
 	pattern := os.Args[1]
 
@@ -172,6 +201,8 @@ func main() {
 		tryAbstractFactory(os.Args[2], os.Args[3])
 	case "bridge":
 		tryBridge()
+	case "strategy":
+		tryStrategy()
 	default:
 		fmt.Println("chose proper pattern!!")
 	}

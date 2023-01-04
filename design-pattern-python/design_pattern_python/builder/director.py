@@ -15,7 +15,7 @@ class Director:
                 "Hi.",
             ]
         )
-        self.__builder.string("時間帯に応じたあいさつ")
+        self.__builder.make_string("時間帯に応じたあいさつ")
         self.__builder.make_items(
             [
                 "Good morning.",

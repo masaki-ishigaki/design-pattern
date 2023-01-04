@@ -1,34 +1,13 @@
 # design-pattern
-## Iterator
-```mermaid
-classDiagram
-class Aggregate
-<<interface>> Aggregate
-Aggregate: itertor()
+## 概要
+「Javaで学ぶデザインパターン入門　第3版」のサンプルコードをPythonとGoで置き換えたもの。
 
-class Iterator
-<<interface>> Iterator
-Iterator: hasNext()
-Iterator: next()
+## 知っておいた方が良い知識
+### SOLID原則
+xxx
 
-class ConcreteAggregate {
-    iterator()
-}
+### DI(Dependncy Injection: 依存性注入)
+xxx
 
-class ConcreteIterator {
-    aggregate
-    hasNext()
-    next()
-}
-
-ConcreteIterator ..|> Iterator: Implement
-ConcreteAggregate ..|> Aggregate: Implement
-Aggregate --> Iterator: Create
-ConcreteIterator --o ConcreteAggregate
-``` 
-
-## Adapter
-### Use Inheritance
-
-
-### Use Delegation
+### 継承と移譲
+xxx
