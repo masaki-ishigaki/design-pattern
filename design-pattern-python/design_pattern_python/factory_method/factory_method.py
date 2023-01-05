@@ -30,7 +30,7 @@ class Factory(metaclass=ABCMeta):
 
 
 class IDCard(Product):
-    def __init__(self, owner: str):
+    def __init__(self, owner: str) -> None:
         print(owner + "のカードを作ります。")
         self.__owner = owner
 

@@ -3,18 +3,18 @@ from abc import ABCMeta, abstractmethod
 
 class AbstractDisplay(metaclass=ABCMeta):
     @abstractmethod
-    def begin(self):
+    def begin(self) -> None:
         pass
 
     @abstractmethod
-    def output(self):
+    def output(self) -> None:
         pass
 
     @abstractmethod
-    def end(self):
+    def end(self) -> None:
         pass
 
-    def display(self):
+    def display(self) -> None:
         self.begin()
         for i in range(5):
             self.output()
@@ -22,34 +22,34 @@ class AbstractDisplay(metaclass=ABCMeta):
 
 
 class CharDisplay(AbstractDisplay):
-    def __init__(self, ch: str):
+    def __init__(self, ch: str) -> None:
         self.__ch = ch
 
-    def begin(self):
+    def begin(self) -> None:
         print("<<", end="")
 
-    def output(self):
+    def output(self) -> None:
         print(self.__ch, end="")
 
-    def end(self):
+    def end(self) -> None:
         print(">>")
 
 
 class StringDisplay(AbstractDisplay):
-    def __init__(self, string: str):
+    def __init__(self, string: str) -> None:
         self.__string = string
         self.__width = len(string)
 
-    def begin(self):
+    def begin(self) -> None:
         self.print_line()
 
-    def output(self):
+    def output(self) -> None:
         print("|" + self.__string + "|")
 
-    def end(self):
+    def end(self) -> None:
         self.print_line()
 
-    def print_line(self):
+    def print_line(self) -> None:
         print("+", end="")
         for _ in range(self.__width):
             print("-", end="")

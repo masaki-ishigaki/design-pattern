@@ -1,5 +1,5 @@
 class Book:
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         self.__name = name
 
     @property
@@ -8,12 +8,12 @@ class Book:
 
 
 class BookShelf:
-    def __init__(self, maxsize: int):
+    def __init__(self, maxsize: int) -> None:
         self.__books = [Book("")] * maxsize
         self.__last = 0
         self.__index = 0
 
-    def __iter__(self):
+    def __iter__(self) -> "BookShelf":
         return self
 
     def __next__(self) -> Book:

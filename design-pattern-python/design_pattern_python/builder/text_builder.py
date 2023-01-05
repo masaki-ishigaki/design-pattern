@@ -4,7 +4,7 @@ from builder import Builder, StringBuilder
 
 
 class TextBuilder(Builder):
-    def __init__(self):
+    def __init__(self) -> None:
         self.__sb = StringBuilder()
 
     def make_title(self, title: str) -> None:

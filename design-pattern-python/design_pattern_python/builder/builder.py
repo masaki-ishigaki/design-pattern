@@ -21,7 +21,7 @@ class Builder(metaclass=ABCMeta):
 
 
 class StringBuilder:
-    def __init__(self):
+    def __init__(self) -> None:
         self.__string = ""
 
     def append(self, string: str) -> None:

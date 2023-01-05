@@ -19,7 +19,7 @@ class Aggregate(metaclass=ABCMeta):
 
 
 class Book:
-    def __init__(self, name: str):
+    def __init__(self, name: str) -> None:
         self.__name = name
 
     @property
@@ -28,7 +28,7 @@ class Book:
 
 
 class BookShelfIterator(Iterator):
-    def __init__(self, book_shelf: Any):
+    def __init__(self, book_shelf: Any) -> None:
         self.__book_shelf = book_shelf
         self.__index = 0
 

@@ -1,15 +1,15 @@
 class Singleton:
     __unique_instance = None
 
-    def __new__(cls_):
+    def __new__(cls_) -> "Singleton":
         raise NotImplementedError("Cannot generate instance by constructor")
 
     @classmethod
-    def __internal_new__(cls):
+    def __internal_new__(cls) -> "Singleton":
         return super().__new__(cls)
 
     @classmethod
-    def get_instance(cls):
+    def get_instance(cls) -> "Singleton":
         if not cls.__unique_instance:
             cls.__unique_instance = cls.__internal_new__()
         return cls.__unique_instance

@@ -14,10 +14,10 @@ class Product(metaclass=ABCMeta):
 
 
 class Manager:
-    def __init__(self):
+    def __init__(self) -> None:
         self.__showcase: Dict[str, Product] = {}
 
-    def register(self, name: str, prototype: Product):
+    def register(self, name: str, prototype: Product) -> None:
         self.__showcase[name] = prototype
 
     def create(self, prototype_name: str) -> Product:
@@ -29,7 +29,7 @@ class Manager:
 
 
 class MessageBox(Product):
-    def __init__(self, decochar: str):
+    def __init__(self, decochar: str) -> None:
         self.__decochar = decochar
 
     def use(self, s: str):
@@ -48,7 +48,7 @@ class MessageBox(Product):
 
 
 class UnderlinePen(Product):
-    def __init__(self, ulchar: str):
+    def __init__(self, ulchar: str) -> None:
         self.__ulchar = ulchar
 
     def use(self, s: str):

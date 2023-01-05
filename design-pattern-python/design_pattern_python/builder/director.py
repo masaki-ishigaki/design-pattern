@@ -2,10 +2,10 @@ from builder import Builder
 
 
 class Director:
-    def __init__(self, builder: Builder):
+    def __init__(self, builder: Builder) -> None:
         self.__builder = builder
 
-    def constrcut(self):
+    def constrcut(self) -> None:
         self.__builder.make_title("Greeting")
         self.__builder.make_string("一般的なあいさつ")
         self.__builder.make_items(

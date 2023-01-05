@@ -4,7 +4,7 @@ from builder import Builder, StringBuilder
 
 
 class HTMLBuilder(Builder):
-    def __init__(self):
+    def __init__(self) -> None:
         self.__filename = "untitled.html"
         self.__sb = StringBuilder()
 
