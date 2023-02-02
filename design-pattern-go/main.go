@@ -6,12 +6,15 @@ import (
 	disp "design-pattern-go/bridge/display"
 	dispi "design-pattern-go/bridge/display_impl"
 	"design-pattern-go/builder"
+	"design-pattern-go/composite"
+	"design-pattern-go/decorator"
 	fm "design-pattern-go/factory_method"
 	iter "design-pattern-go/iterator"
 	pr "design-pattern-go/prototype"
 	"design-pattern-go/singleton"
 	"design-pattern-go/strategy"
 	tm "design-pattern-go/template_method"
+	"design-pattern-go/visitor"
 	"fmt"
 	"os"
 )
@@ -179,6 +182,83 @@ func tryStrategy() {
 	fmt.Println(player2)
 }
 
+func tryComposite() {
+	fmt.Println("Making root entries...")
+	rootdir := composite.NewDirectory("root")
+	bindir := composite.NewDirectory("bin")
+	tmpdir := composite.NewDirectory("tmp")
+	usrdir := composite.NewDirectory("usr")
+	rootdir.Add(bindir)
+	rootdir.Add(tmpdir)
+	rootdir.Add(usrdir)
+	bindir.Add(composite.NewFile("vi", 10000))
+	bindir.Add(composite.NewFile("latex", 20000))
+	rootdir.PrintList("")
+
+	fmt.Println("Making user entries...")
+	yuki := composite.NewDirectory("yuki")
+	hanako := composite.NewDirectory("hanako")
+	tomura := composite.NewDirectory("tomura")
+	usrdir.Add(yuki)
+	usrdir.Add(hanako)
+	usrdir.Add(tomura)
+	yuki.Add(composite.NewFile("diary.html", 100))
+	yuki.Add(composite.NewFile("Composite.java", 200))
+	hanako.Add(composite.NewFile("memo.text", 300))
+	tomura.Add(composite.NewFile("game.doc", 400))
+	tomura.Add(composite.NewFile("junk.mail", 500))
+	rootdir.PrintList("")
+}
+
+func tryDecorator() {
+	b1 := decorator.NewStringDisplay("Hello, world.")
+	b2 := decorator.NewSideBorder(b1, "#")
+	b3 := decorator.NewFullBorder(b2)
+	b1.Show()
+	b2.Show()
+	b3.Show()
+	b4 := decorator.NewSideBorder(
+		decorator.NewFullBorder(
+			decorator.NewFullBorder(
+				decorator.NewSideBorder(
+					decorator.NewFullBorder(decorator.NewStringDisplay("Hello, world")),
+					"*",
+				),
+			),
+		),
+		"/",
+	)
+	b4.Show()
+}
+
+func tryVisitor() {
+	fmt.Println("Making root entries...")
+	rootdir := visitor.NewDirectory("root")
+	bindir := visitor.NewDirectory("bin")
+	tmpdir := visitor.NewDirectory("tmp")
+	usrdir := visitor.NewDirectory("usr")
+	rootdir.Add(bindir.Entry)
+	rootdir.Add(tmpdir.Entry)
+	rootdir.Add(usrdir.Entry)
+	bindir.Add(visitor.NewFile("vi", 10000).Entry)
+	bindir.Add(visitor.NewFile("latex", 20000).Entry)
+	rootdir.Accept(visitor.NewListVisitor())
+
+	fmt.Println("Making user entries...")
+	yuki := visitor.NewDirectory("yuki")
+	hanako := visitor.NewDirectory("hanako")
+	tomura := visitor.NewDirectory("tomura")
+	usrdir.Add(yuki.Entry)
+	usrdir.Add(hanako.Entry)
+	usrdir.Add(tomura.Entry)
+	yuki.Add(visitor.NewFile("diary.html", 100).Entry)
+	yuki.Add(visitor.NewFile("Composite.java", 200).Entry)
+	hanako.Add(visitor.NewFile("memo.text", 300).Entry)
+	tomura.Add(visitor.NewFile("game.doc", 400).Entry)
+	tomura.Add(visitor.NewFile("junk.mail", 500).Entry)
+	rootdir.Accept(visitor.NewListVisitor())
+}
+
 func main() {
 	pattern := os.Args[1]
 
@@ -203,6 +283,12 @@ func main() {
 		tryBridge()
 	case "strategy":
 		tryStrategy()
+	case "composite":
+		tryComposite()
+	case "decorator":
+		tryDecorator()
+	case "visitor":
+		tryVisitor()
 	default:
 		fmt.Println("chose proper pattern!!")
 	}
