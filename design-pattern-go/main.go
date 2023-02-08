@@ -6,8 +6,10 @@ import (
 	disp "design-pattern-go/bridge/display"
 	dispi "design-pattern-go/bridge/display_impl"
 	"design-pattern-go/builder"
+	cop "design-pattern-go/chain_of_responsibility"
 	"design-pattern-go/composite"
 	"design-pattern-go/decorator"
+	"design-pattern-go/facade"
 	fm "design-pattern-go/factory_method"
 	iter "design-pattern-go/iterator"
 	pr "design-pattern-go/prototype"
@@ -259,6 +261,30 @@ func tryVisitor() {
 	rootdir.Accept(visitor.NewListVisitor())
 }
 
+func tryChainOfResponsibility() {
+	alice := cop.NewNoSupport("Alice")
+	bob := cop.NewLimitSupport("Bob", 100)
+	charlie := cop.NewSpecialSupport("Charlie", 429)
+	diana := cop.NewLimitSupport("Diana", 200)
+	elmo := cop.NewOddSupport("Elmo")
+	fred := cop.NewLimitSupport("Fred", 300)
+
+	// 連鎖の作成
+	alice.SetNext(bob.Support).
+		SetNext(charlie.Support).
+		SetNext(diana.Support).
+		SetNext(elmo.Support).
+		SetNext(fred.Support)
+
+	for i := 0; i < 500; i++ {
+		alice.Support.Support(cop.NewTrouble(i))
+	}
+}
+
+func tryFacade() {
+	facade.MakeWelcomePage("hyuki@example.com", "welcome.html")
+}
+
 func main() {
 	pattern := os.Args[1]
 
@@ -289,6 +315,10 @@ func main() {
 		tryDecorator()
 	case "visitor":
 		tryVisitor()
+	case "chain_of_responsibility":
+		tryChainOfResponsibility()
+	case "facade":
+		tryFacade()
 	default:
 		fmt.Println("chose proper pattern!!")
 	}
